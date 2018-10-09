@@ -1,0 +1,95 @@
+ECLIPSE ANDROID PROJECT IMPORT SUMMARY
+======================================
+
+Ignored Files:
+--------------
+The following files were *not* copied into the new Gradle project; you
+should evaluate whether these are still needed in your project and if
+so manually move them:
+
+* .gitignore
+* LICENSE
+* README.rst
+* build.sh
+* build.xml
+
+Moved Files:
+------------
+Android Gradle projects use a different directory structure than ADT
+Eclipse projects. Here's how the projects were restructured:
+
+* AndroidManifest.xml => app/src/main/AndroidManifest.xml
+* jni/ => app/src/main/jni/
+* res/ => app/src/main/res/
+* src/ => app/src/main/java/
+
+Next Steps:
+-----------
+You can now build the project. The Gradle project needs network
+connectivity to download dependencies.
+
+Bugs:
+-----
+If for some reason your project does not build, and you determine that
+it is due to a bug or limitation of the Eclipse to Gradle importer,
+please file a bug at http://b.android.com with category
+Component-Tools.
+
+(This import summary is for your information only, and can be deleted
+after import once you are satisfied with the results.)
+
+
+Building this App from Source manually
+Instructions here are for development on Linux.
+
+Requirements
+In order to build this application, you need the following:
+
+Flite 2.0.0 or later. A version can be downloaded from http://www.festvox.org/flite/packed/flite-2.0/flite-2.0.0-release.tar.bz2
+Android NDK Release 15c
+Android SDK Release 26.0.2
+Application Build Steps
+Export necessary environment variables
+
+#export FLITEDIR=/path/to/flite-2.0.0
+export FLITEDIR=/home/m1035364/Toyota_project_doc/VikasProjectData/IndianLanguage/voiceV2.1/flite-2.1-release
+#export FLITE_APP_DIR=/path/to/this/application
+export FLITE_APP_DIR=/home/m1035364/Toyota_project_doc/VikasProjectData/IndianLanguage/FliteTTSEngine/app/src/main/jni
+#export ANDROID_NDK=/path/to/android/ndk
+export ANDROID_NDK=/home/m1035364/Android/Sdk/android-ndk-r15c
+#export ANDROID_SDK=/path/to/android/sdk
+export ANDROID_SDK=/home/m1035364/Android/Sdk
+Build Flite Engine for multiple architectures
+
+cd $FLITEDIR
+./configure --with-langvox=android --target=armeabi-android
+make
+./configure --with-langvox=android --target=armeabiv7a-android
+make
+./configure --with-langvox=android --target=x86-android
+make
+
+#ndk-build -C ./app/src/main/jni/
+#ndk-build clean -C ../../FliteTTSEngine/app/src/main/jni/
+done the needfull changes in the module level gradle like
+in defaultConfig
+ndk {
+            moduleName "ttsflite"
+            abiFilters 'armeabi-v7a','x86'
+     }
+below buildtype
+externalNativeBuild {
+        ndkBuild {
+            path './src/main/jni/Android.mk'
+        }
+    }
+
+./gradlew clean
+./gradlew build
+output done
+implement the storage permission or give manual permission to app
+
+
+
+
+

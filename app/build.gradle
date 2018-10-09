@@ -1,0 +1,92 @@
+import org.apache.tools.ant.taskdefs.condition.Os
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion 27
+    buildToolsVersion "27.0.3"
+
+    defaultConfig {
+        applicationId "edu.cmu.cs.speech.tts.flite"
+        minSdkVersion 14
+        targetSdkVersion 27
+//        externalNativeBuild {
+//           cmake {
+//                cppFlags "-fexceptions"
+//            }
+//        }
+        ndk {
+            moduleName "ttsflite"
+//            cFlags "-std=c++11 -fexceptions"
+//            ldLibs "log"
+//            stl "gnustl_shared"
+            abiFilters /*'arm64-v8a',*/ 'armeabi-v7a',/* 'x86_64',*/ 'x86'
+        }
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
+        }
+    }
+    externalNativeBuild {
+        ndkBuild {
+            path './src/main/jni/Android.mk'
+        }
+    }
+
+//    externalNativeBuild {
+//        cmake {
+//            path "CMakeLists.txt"
+//        }
+//    }
+
+    //if your are keeping the jniLibs folder with .so file in your project then keep below file or have cpp file then only then only keep below line
+    //sourceSets { main { jni.srcDirs = ['src/main/jni', 'src/main/jni/'] } }
+    //sourceSets.main.jniLibs.srcDir 'src/main/libs'
+//    sourceSets.main.jni.srcDirs = [] // disable automatic ndk-build call, which ignore our Android.mk
+    // call regular ndk-build(.cmd) script from app directory
+//    task ndkBuild(type: Exec) {
+//        workingDir file('src/main')
+//        commandLine getNdkBuildCmd()
+//    }
+//    tasks.withType(JavaCompile) {
+//        compileTask -> compileTask.dependsOn ndkBuild
+//    }
+//    task cleanNative(type: Exec) {
+//        workingDir file('src/main')
+//        commandLine getNdkBuildCmd(), 'clean'
+//    }
+//    clean.dependsOn cleanNative
+}
+
+dependencies {
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+//    implementation 'com.android.support:appcompat-v7:27.0.3'
+//    implementation 'com.android.support.constraint:constraint-layout:1.1.2'
+//    releaseImplementation 'com.squareup.leakcanary:leakcanary-android-no-op:1.6.1'
+//    testImplementation 'com.squareup.leakcanary:leakcanary-android-no-op:1.6.1'
+//    debugImplementation 'com.squareup.leakcanary:leakcanary-android:1.6.1'
+}
+//def getNdkDir() {
+//    if (System.env.ANDROID_NDK_ROOT != null)
+//        return System.env.ANDROID_NDK_ROOT
+//    Properties properties = new Properties()
+//    properties.load(project.rootProject.file('local.properties').newDataInputStream())
+//    def ndkdir = properties.getProperty('ndk.dir', null)
+//    if (ndkdir == null)
+//        throw new GradleException("NDK location not found. Define location with ndk.dir in the local.properties file or with an ANDROID_NDK_ROOT environment variable.")
+//    return ndkdir
+//}
+//def getNdkBuildCmd() {
+//    def ndkbuild = getNdkDir() + "/ndk-build"
+//    if (Os.isFamily(Os.FAMILY_WINDOWS))
+//        ndkbuild += ".cmd"
+//    return ndkbuild
+//}
+
+
+
+
+
+
